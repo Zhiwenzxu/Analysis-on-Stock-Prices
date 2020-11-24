@@ -1,0 +1,1176 @@
+---
+title: "Final-R code-Zhiwen Xu"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r}
+library(ggplot2)
+library(forecast) 
+require(gdata)
+library(tidyr)
+library(xts)
+library(readxl)
+library(tseries)
+library(TSA)
+```
+
+# First Dataset AMGN #
+
+```{r}
+data1 = read_xlsx ("ZhiwenXu.xlsx", sheet = 1)
+data_clean1 = data1 %>% drop_na()
+return1 = as.ts(data_clean1$`return`)
+```
+
+### plot the series ###
+```{r}
+plot(return1)
+```
+
+### Fit different models
+
+### Best model is Garch(1,2)
+```{r, results='hide'}
+mpq = garch(x=return1,order=c(1,1))
+mpq1 = garch(x=return1,order=c(1,2))
+mpq2 = garch(x=return1,order=c(2,1))
+mpq3 = garch(x=return1,order=c(2,2))
+```
+
+```{r}
+summary(mpq)
+summary(mpq1)
+summary(mpq2)
+summary(mpq3)
+```
+
+### plot residuals ###
+
+```{r}
+plot(residuals(mpq1),type='h',ylab='standardized residuals')
+```
+
+### sum of squared residuals ###
+
+```{r}
+sum(na.omit(residuals(mpq))^2)
+sum(na.omit(residuals(mpq1))^2)
+res1 = residuals(mpq1)
+sum(na.omit(residuals(mpq2))^2)
+sum(na.omit(residuals(mpq3))^2)
+```
+
+
+### diagnostics
+```{r}
+# diagnostics
+qqnorm(residuals(mpq1)); qqline(residuals(mpq1))
+acf(residuals(mpq1)^2,na.action=na.omit)
+shapiro.test(na.omit(residuals(mpq1)))
+jarque.bera.test(na.omit(residuals(mpq1)))
+skewness(na.omit(residuals(mpq1)))
+kurtosis(na.omit(residuals(mpq1)))
+gBox(mpq1,x=return1,method='squared')
+gBox(mpq1,lags =20,plot = F, x=return1,method='squared')$pvalue
+```
+
+# Second Dataset AMGN #
+
+```{r}
+data2 = read_xlsx ("ZhiwenXu.xlsx", sheet = 2)
+data_clean2 = data2 %>% drop_na()
+return2 = as.ts(data_clean2$`return`)
+```
+
+### plot the series ###
+```{r}
+plot(return2)
+```
+
+### Fit different models
+
+### Best model is Garch(1,2)
+```{r, results='hide'}
+mpq = garch(x=return2,order=c(1,1))
+mpq1 = garch(x=return2,order=c(1,2))
+mpq2 = garch(x=return2,order=c(2,1))
+mpq3 = garch(x=return2,order=c(2,2))
+```
+
+```{r}
+summary(mpq)
+summary(mpq1)
+summary(mpq2)
+summary(mpq3)
+```
+
+### plot residuals ###
+
+```{r}
+plot(residuals(mpq1),type='h',ylab='standardized residuals')
+```
+
+### sum of squared residuals ###
+
+```{r}
+sum(na.omit(residuals(mpq))^2)
+sum(na.omit(residuals(mpq1))^2)
+res2 = residuals(mpq1)
+sum(na.omit(residuals(mpq2))^2)
+sum(na.omit(residuals(mpq3))^2)
+```
+
+### diagnostics
+```{r}
+# diagnostics
+qqnorm(residuals(mpq1)); qqline(residuals(mpq1))
+acf(residuals(mpq1)^2,na.action=na.omit)
+shapiro.test(na.omit(residuals(mpq1)))
+jarque.bera.test(na.omit(residuals(mpq1)))
+skewness(na.omit(residuals(mpq1)))
+kurtosis(na.omit(residuals(mpq1)))
+gBox(mpq1,x=return2,method='squared')
+gBox(mpq1,lags =20,plot = F, x=return2,method='squared')$pvalue
+```
+
+# Third Dataset AAPL #
+
+```{r}
+data3 = read_xlsx ("ZhiwenXu.xlsx", sheet = 3)
+data_clean3 = data3 %>% drop_na()
+return3 = as.ts(data_clean3$`return`)
+```
+
+### plot the series ###
+```{r}
+plot(return3)
+```
+
+### Fit different models
+
+### Best model is Garch(1,2)
+```{r, results='hide'}
+mpq = garch(x=return3,order=c(1,1))
+mpq1 = garch(x=return3,order=c(1,2))
+mpq2 = garch(x=return3,order=c(2,1))
+mpq3 = garch(x=return3,order=c(2,2))
+```
+
+```{r}
+summary(mpq)
+summary(mpq1)
+summary(mpq2)
+summary(mpq3)
+```
+
+### plot residuals ###
+
+```{r}
+plot(residuals(mpq1),type='h',ylab='standardized residuals')
+```
+
+### sum of squared residuals ###
+
+```{r}
+sum(na.omit(residuals(mpq))^2)
+sum(na.omit(residuals(mpq1))^2)
+res3 = residuals(mpq1)
+sum(na.omit(residuals(mpq2))^2)
+sum(na.omit(residuals(mpq3))^2)
+```
+
+### diagnostics
+```{r}
+# diagnostics
+qqnorm(residuals(mpq1)); qqline(residuals(mpq1))
+acf(residuals(mpq1)^2,na.action=na.omit)
+shapiro.test(na.omit(residuals(mpq1)))
+jarque.bera.test(na.omit(residuals(mpq1)))
+skewness(na.omit(residuals(mpq1)))
+kurtosis(na.omit(residuals(mpq1)))
+gBox(mpq1,x=return3,method='squared')
+gBox(mpq1,lags =20,plot = F, x=return3,method='squared')$pvalue
+```
+
+# Fourth Dataset AVY #
+
+```{r}
+data4 = read_xlsx ("ZhiwenXu.xlsx", sheet = 4)
+data_clean4 = data4 %>% drop_na()
+return4 = as.ts(data_clean4$`return`)
+```
+
+### plot the series ###
+```{r}
+plot(return4)
+```
+
+### Fit different models
+
+### Best model is Garch(1,2)
+```{r, results='hide'}
+mpq = garch(x=return4,order=c(1,1))
+mpq1 = garch(x=return4,order=c(1,2))
+mpq2 = garch(x=return4,order=c(2,1))
+mpq3 = garch(x=return4,order=c(2,2))
+```
+
+```{r}
+summary(mpq)
+summary(mpq1)
+summary(mpq2)
+summary(mpq3)
+```
+
+### plot residuals ###
+
+```{r}
+plot(residuals(mpq1),type='h',ylab='standardized residuals')
+```
+
+### sum of squared residuals ###
+
+```{r}
+sum(na.omit(residuals(mpq))^2)
+sum(na.omit(residuals(mpq1))^2)
+res4= residuals(mpq1)
+sum(na.omit(residuals(mpq2))^2)
+sum(na.omit(residuals(mpq3))^2)
+```
+
+### diagnostics
+```{r}
+qqnorm(residuals(mpq1)); qqline(residuals(mpq1))
+acf(residuals(mpq1)^2,na.action=na.omit)
+shapiro.test(na.omit(residuals(mpq1)))
+jarque.bera.test(na.omit(residuals(mpq1)))
+skewness(na.omit(residuals(mpq1)))
+kurtosis(na.omit(residuals(mpq1)))
+```
+
+```{R}
+gBox(mpq1,x=return4,method='squared')
+gBox(mpq1,lags =20,plot = F, x=return4,method='squared')$pvalue
+```
+
+# Fifth Dataset COF #
+
+```{r}
+data5 = read_xlsx ("ZhiwenXu.xlsx", sheet = 5)
+data_clean5 = data5 %>% drop_na()
+return5 = as.ts(data_clean5$`return`)
+```
+
+### plot the series ###
+```{r}
+plot(return5)
+```
+
+### Fit different models
+
+### Best model is Garch(1,2)
+```{r, results='hide'}
+mpq = garch(x=return5,order=c(1,1))
+mpq1 = garch(x=return5,order=c(1,2))
+mpq2 = garch(x=return5,order=c(2,1))
+mpq3 = garch(x=return5,order=c(2,2))
+```
+
+```{r}
+summary(mpq)
+summary(mpq1)
+summary(mpq2)
+summary(mpq3)
+```
+
+### plot residuals ###
+
+```{r}
+plot(residuals(mpq1),type='h',ylab='standardized residuals')
+```
+
+### sum of squared residuals ###
+
+```{r}
+sum(na.omit(residuals(mpq))^2)
+sum(na.omit(residuals(mpq1))^2)
+res5  = residuals(mpq1)
+sum(na.omit(residuals(mpq2))^2)
+sum(na.omit(residuals(mpq3))^2)
+```
+
+### diagnostics
+```{r}
+qqnorm(residuals(mpq1)); qqline(residuals(mpq1))
+acf(residuals(mpq1)^2,na.action=na.omit)
+shapiro.test(na.omit(residuals(mpq1)))
+jarque.bera.test(na.omit(residuals(mpq1)))
+skewness(na.omit(residuals(mpq1)))
+kurtosis(na.omit(residuals(mpq1)))
+```
+
+```{R}
+gBox(mpq1,x=return5,method='squared')
+gBox(mpq1,lags =20,plot = F, x=return5,method='squared')$pvalue
+```
+
+
+# Sixth Dataset TMO #
+
+```{r}
+data6 = read_xlsx ("ZhiwenXu.xlsx", sheet = 6)
+data_clean6 = data6 %>% drop_na()
+return6 = as.ts(data_clean6$`return`)
+```
+
+### plot the series ###
+```{r}
+plot(return6)
+```
+
+### Fit different models
+
+### Best model is Garch(1,1)
+```{r, results='hide'}
+mpq = garch(x=return6,order=c(1,1))
+mpq1 = garch(x=return6,order=c(1,2))
+mpq2 = garch(x=return6,order=c(2,1))
+mpq3 = garch(x=return6,order=c(2,2))
+```
+
+```{r}
+summary(mpq)
+summary(mpq1)
+summary(mpq2)
+summary(mpq3)
+```
+
+### plot residuals ###
+
+```{r}
+plot(residuals(mpq),type='h',ylab='standardized residuals')
+```
+
+### sum of squared residuals ###
+
+```{r}
+sum(na.omit(residuals(mpq))^2)
+res6 = residuals(mpq)
+sum(na.omit(residuals(mpq1))^2)
+sum(na.omit(residuals(mpq2))^2)
+sum(na.omit(residuals(mpq3))^2)
+```
+
+### diagnostics
+```{r}
+qqnorm(residuals(mpq)); qqline(residuals(mpq))
+acf(residuals(mpq)^2,na.action=na.omit)
+shapiro.test(na.omit(residuals(mpq)))
+jarque.bera.test(na.omit(residuals(mpq)))
+skewness(na.omit(residuals(mpq)))
+kurtosis(na.omit(residuals(mpq)))
+```
+
+```{R}
+gBox(mpq,x=return6,method='squared')
+gBox(mpq,lags =20,plot = F, x=return6,method='squared')$pvalue
+```
+
+# Seventh Dataset UPS #
+
+```{r}
+data7 = read_xlsx ("ZhiwenXu.xlsx", sheet = 7)
+data_clean7 = data7 %>% drop_na()
+return7 = as.ts(-data_clean7$`Neg. log return`)
+```
+
+### plot the series ###
+```{r}
+plot(return7)
+```
+
+### Fit different models
+
+### Best model is Garch(1,2)
+```{r, results='hide'}
+mpq = garch(x=return7,order=c(1,1))
+mpq1 = garch(x=return7,order=c(1,2))
+mpq2 = garch(x=return7,order=c(2,1))
+mpq3 = garch(x=return7,order=c(2,2))
+```
+
+```{r}
+summary(mpq)
+summary(mpq1)
+summary(mpq2)
+summary(mpq3)
+```
+
+### plot residuals ###
+
+```{r}
+plot(residuals(mpq1),type='h',ylab='standardized residuals')
+```
+
+### sum of squared residuals ###
+
+```{r}
+sum(na.omit(residuals(mpq))^2)
+sum(na.omit(residuals(mpq1))^2)
+res7 = residuals(mpq1)
+sum(na.omit(residuals(mpq2))^2)
+sum(na.omit(residuals(mpq3))^2)
+```
+
+### diagnostics
+```{r}
+qqnorm(residuals(mpq1)); qqline(residuals(mpq1))
+acf(residuals(mpq1)^2,na.action=na.omit)
+shapiro.test(na.omit(residuals(mpq1)))
+jarque.bera.test(na.omit(residuals(mpq1)))
+skewness(na.omit(residuals(mpq1)))
+kurtosis(na.omit(residuals(mpq1)))
+```
+
+```{R}
+gBox(mpq1,x=return7,method='squared')
+gBox(mpq1,lags =20,plot = F, x=return7,method='squared')$pvalue
+```
+
+# Eighth Dataset BIIB #
+
+```{r}
+data8 = read_xlsx ("ZhiwenXu.xlsx", sheet = 8)
+data_clean8 = data8 %>% drop_na()
+return8= as.ts(data_clean8$`return`)
+```
+
+### plot the series ###
+```{r}
+plot(return8)
+```
+
+### Fit different models
+
+### Best model is Garch(1,1)
+```{r, results='hide'}
+mpq = garch(x=return8,order=c(1,1))
+mpq1 = garch(x=return8,order=c(1,2))
+mpq2 = garch(x=return8,order=c(2,1))
+mpq3 = garch(x=return8,order=c(2,2))
+```
+
+```{r}
+summary(mpq)
+summary(mpq1)
+summary(mpq2)
+summary(mpq3)
+```
+
+### plot residuals ###
+
+```{r}
+plot(residuals(mpq),type='h',ylab='standardized residuals')
+```
+
+### sum of squared residuals ###
+
+```{r}
+sum(na.omit(residuals(mpq))^2)
+res8 = residuals(mpq)
+sum(na.omit(residuals(mpq1))^2)
+sum(na.omit(residuals(mpq2))^2)
+sum(na.omit(residuals(mpq3))^2)
+```
+
+### diagnostics
+```{r}
+qqnorm(residuals(mpq)); qqline(residuals(mpq))
+acf(residuals(mpq)^2,na.action=na.omit)
+shapiro.test(na.omit(residuals(mpq)))
+jarque.bera.test(na.omit(residuals(mpq)))
+skewness(na.omit(residuals(mpq)))
+kurtosis(na.omit(residuals(mpq)))
+```
+
+```{R}
+gBox(mpq,x=return8,method='squared')
+gBox(mpq,lags =20,plot = F, x=return8,method='squared')$pvalue
+```
+
+# Ninth Dataset GPS #
+
+```{r}
+data9 = read_xlsx ("ZhiwenXu.xlsx", sheet = 9)
+data_clean9 = data9 %>% drop_na()
+return9 = as.ts(data_clean9$`return`)
+```
+
+### plot the series ###
+```{r}
+plot(return9)
+```
+
+### Fit different models
+
+### Best model is Garch(1,1)
+```{r, results='hide'}
+mpq = garch(x=return9,order=c(1,1))
+mpq1 = garch(x=return9,order=c(1,2))
+mpq2 = garch(x=return9,order=c(2,1))
+mpq3 = garch(x=return9,order=c(2,2))
+```
+
+```{r}
+summary(mpq)
+summary(mpq1)
+summary(mpq2)
+summary(mpq3)
+```
+
+### plot residuals ###
+
+```{r}
+plot(residuals(mpq),type='h',ylab='standardized residuals')
+```
+
+### sum of squared residuals ###
+
+```{r}
+sum(na.omit(residuals(mpq))^2)
+res9 = residuals(mpq)
+sum(na.omit(residuals(mpq1))^2)
+sum(na.omit(residuals(mpq2))^2)
+sum(na.omit(residuals(mpq3))^2)
+```
+
+### diagnostics
+```{r}
+qqnorm(residuals(mpq)); qqline(residuals(mpq))
+acf(residuals(mpq)^2,na.action=na.omit)
+shapiro.test(na.omit(residuals(mpq)))
+jarque.bera.test(na.omit(residuals(mpq)))
+skewness(na.omit(residuals(mpq)))
+kurtosis(na.omit(residuals(mpq)))
+```
+
+```{R}
+gBox(mpq,x=return9,method='squared')
+gBox(mpq,lags =20,plot = F, x=return9,method='squared')$pvalue
+```
+
+# Tenth Dataset IPG #
+
+```{r}
+data10 = read_xlsx ("ZhiwenXu.xlsx", sheet = 10)
+data_clean10 = data10 %>% drop_na()
+return10 = as.ts(data_clean10$`return`)
+```
+
+### plot the series ###
+```{r}
+plot(return10)
+```
+
+### Fit different models
+
+### Best model is Garch(2,1)
+```{r, results='hide'}
+mpq = garch(x=return10,order=c(1,1))
+mpq1 = garch(x=return10,order=c(1,2))
+mpq2 = garch(x=return10,order=c(2,1))
+mpq3 = garch(x=return10,order=c(2,2))
+```
+
+```{r}
+summary(mpq)
+summary(mpq1)
+summary(mpq2)
+summary(mpq3)
+```
+
+### plot residuals ###
+
+```{r}
+plot(residuals(mpq2),type='h',ylab='standardized residuals')
+```
+
+### sum of squared residuals ###
+
+```{r}
+sum(na.omit(residuals(mpq))^2)
+sum(na.omit(residuals(mpq1))^2)
+sum(na.omit(residuals(mpq2))^2)
+sum(na.omit(residuals(mpq3))^2)
+res10 = residuals(mpq3)
+```
+
+### diagnostics
+```{r}
+qqnorm(residuals(mpq2)); qqline(residuals(mpq2))
+acf(residuals(mpq2)^2,na.action=na.omit)
+shapiro.test(na.omit(residuals(mpq2)))
+jarque.bera.test(na.omit(residuals(mpq2)))
+skewness(na.omit(residuals(mpq2)))
+kurtosis(na.omit(residuals(mpq2)))
+```
+
+```{R}
+gBox(mpq2,x=return10,method='squared')
+gBox(mpq2,lags =20,plot = F, x=return10,method='squared')$pvalue
+```
+
+### Step 5
+
+```{r}
+new = rep(0,length(return1))
+for (i in 1:length(return1)){
+new[[i]] = 0.1*return1[i] + 0.1*return2[i] + 0.1*return3[i] + 0.1*return4[i] + 0.1*return5[i]+0.1*return6[i]+0.1*return7[i]+0.1*return8[i]+0.1*return9[i]+0.1*return10[i]
+}
+```
+
+```{r}
+base_mean = mean(new)
+base_mean
+base_sd = sd(new)
+base_sd
+```
+
+```{r}
+set.seed(0)
+max_mean = 0
+b1 = rep(0, 8)
+b2 = rep(0, 8)
+b3 = rep(0, 8)
+b4 = rep(0, 8)
+b5 = rep(0, 8)
+b6 = rep(0, 8)
+b7 = rep(0, 8)
+b8 = rep(0, 8)
+b9 = rep(0, 8)
+b10= rep(0, 8)
+best_sd = 0
+```
+
+```{r}
+counter =0
+c1 = seq(0,1,by=0.1)
+  for (a in 1:length(c1)){
+    if (counter == 8){
+      break
+    }
+    c2 = seq(0,1-c1[a],by=0.1)
+    for (b in 1:length(c2)){
+      if(counter == 8){
+        break
+      }
+      c3 = seq(0,1-c1[a]-c2[b],by=0.1)
+      for (c in 1:length(c3)){
+        if(counter == 8){
+          break
+        }
+        c4 = seq(0,1-c1[a]-c2[b]-c3[c],by=0.1)
+        for(d in 1:length(c4)){
+          if(counter == 8){
+            break
+          }
+          c5 = seq(0,1-c1[a]-c2[b]-c3[c]-c4[d],by=0.1)
+          for(e in 1:length(c5)){
+            if(counter == 8){
+              break
+            }
+            c6 = seq(0,1-c1[a]-c2[b]-c3[c]-c4[d]-c5[e],by=0.1)
+            for (f in 1:length(c6)){
+              if(counter == 8){
+                break
+              }
+              c7 = seq(0,1-c1[a]-c2[b]-c3[c]-c4[d]-c5[e]-c6[f],by=0.1)
+              for(g in 1:length(c7)){
+                if(counter == 8){
+                break
+                }
+                c8 = seq(0,1-c1[a]-c2[b]-c3[c]-c4[d]-c5[e]-c6[f]-c7[g],by=0.1)
+                for (h in 1:length(c8)){
+                  if(counter == 8){
+                  break
+                  }
+                  c9 = seq(0,1-c1[a]-c2[b]-c3[c]-c4[d]-c5[e]-c6[f]-c7[g]-c8[h],by=0.1)
+                  for(j in 1:length(c9)){
+                    if(counter == 8){
+                    break
+                    }
+                     c10 = 1-(c1[a] + c2[b] + c3[c] + c4[d] + c5[e]+c6[f]+c7[g]+c8[h]+c9[j])
+                         new =rep(0, length(return1))
+                         for (i in 1:length(return1)){
+                         new[[i]] = c1[a]*return1[i] + c2[b]*return2[i] + c3[c]*return3[i] + c4[d]*return4[i] + c5[e]*return5[i]+c6[f]*return6[i]+c7[g]*return7[i]+c8[h]*return8[i]+c9[j]*return9[i]+c10*return10[i]
+                         }
+                         mean = mean(new)
+                         if ( max_mean <= mean){
+                           if( sd (new) <= 0.006174595){
+                             max_mean = mean
+                             counter  = counter + 1
+                             b1[counter] = c1[a] 
+                             b2[counter] = c2[b]
+                             b3[counter] = c3[c] 
+                             b4[counter] = c4[d] 
+                             b5[counter] = c5[e]
+                             b6[counter] = c6[f]
+                             b7[counter] = c7[g]
+                             b8[counter] = c8[h]
+                             b9[counter] = c9[j]
+                             b10[counter] = c10
+                             best_sd = sd(new)
+                             print(counter)
+                             print(best_sd)
+                             print(max_mean)
+                           }
+                         }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+```
+
+```{r}
+print(b1)
+print(b2)
+print(b3)
+print(b4)
+print(b5)
+print(b6)
+print(b7)
+print(b8)
+print(b9)
+print(b10)
+```
+
+# Step 6
+
+```{r}
+new_res1 = res1[8:length(res1)]
+new_res2 = res2[8:length(res2)]
+new_res3 = res3[8:length(res3)]
+new_res4 = res4[8:length(res4)]
+new_res5 = res5[8:length(res5)]
+new_res6 = res6[8:length(res6)]
+new_res7 = res7[8:length(res7)]
+new_res8 = res8[8:length(res8)]
+new_res9 = res9[8:length(res9)]
+new_res10 = res10[8:length(res10)]
+```
+
+```{r}
+new = rep(0,length(new_res1))
+for (i in 1:length(new_res1)){
+new[[i]] = 0.1*new_res1[i] + 0.1*new_res2[i] + 0.1*new_res3[i] + 0.1*new_res4[i] + 0.1*new_res5[i]+0.1*new_res6[i]+0.1*new_res7[i]+0.1*new_res8[i]+0.1*new_res9[i]+0.1*new_res10[i]
+}
+```
+
+```{r}
+mean(new)
+base_sd = sd(new)
+base_sd
+```
+
+```{r}
+set.seed(0)
+max_mean = 0
+b1 = rep(0, 8)
+b2 = rep(0, 8)
+b3 = rep(0, 8)
+b4 = rep(0, 8)
+b5 = rep(0, 8)
+b6 = rep(0, 8)
+b7 = rep(0, 8)
+b8 = rep(0, 8)
+b9 = rep(0, 8)
+b10= rep(0, 8)
+best_sd = 0
+```
+
+```{r}
+counter =0
+c1 = seq(0,1,by=0.1)
+  for (a in 1:length(c1)){
+    if (counter == 8){
+      break
+    }
+    c2 = seq(0,1-c1[a],by=0.1)
+    for (b in 1:length(c2)){
+      if(counter == 8){
+        break
+      }
+      c3 = seq(0,1-c1[a]-c2[b],by=0.1)
+      for (c in 1:length(c3)){
+        if(counter == 8){
+          break
+        }
+        c4 = seq(0,1-c1[a]-c2[b]-c3[c],by=0.1)
+        for(d in 1:length(c4)){
+          if(counter == 8){
+            break
+          }
+          c5 = seq(0,1-c1[a]-c2[b]-c3[c]-c4[d],by=0.1)
+          for(e in 1:length(c5)){
+            if(counter == 8){
+              break
+            }
+            c6 = seq(0,1-c1[a]-c2[b]-c3[c]-c4[d]-c5[e],by=0.1)
+            for (f in 1:length(c6)){
+              if(counter == 8){
+                break
+              }
+              c7 = seq(0,1-c1[a]-c2[b]-c3[c]-c4[d]-c5[e]-c6[f],by=0.1)
+              for(g in 1:length(c7)){
+                if(counter == 8){
+                break
+                }
+                c8 = seq(0,1-c1[a]-c2[b]-c3[c]-c4[d]-c5[e]-c6[f]-c7[g],by=0.1)
+                for (h in 1:length(c8)){
+                  if(counter == 8){
+                  break
+                  }
+                  c9 = seq(0,1-c1[a]-c2[b]-c3[c]-c4[d]-c5[e]-c6[f]-c7[g]-c8[h],by=0.1)
+                  for(j in 1:length(c9)){
+                    if(counter == 8){
+                    break
+                    }
+                     c10 = 1-(c1[a] + c2[b] + c3[c] + c4[d] + c5[e]+c6[f]+c7[g]+c8[h]+c9[j])
+                         new =rep(0, length(new_res1))
+                         for (i in 1:length(new_res1)){
+                         new[[i]] = c1[a]*new_res1[i] + c2[b]*new_res2[i] + c3[c]*new_res3[i] + c4[d]*new_res4[i] + c5[e]*new_res5[i]+c6[f]*new_res6[i]+c7[g]*new_res7[i]+c8[h]*new_res8[i]+c9[j]*new_res9[i]+c10*new_res10[i]
+                         }
+                         mean = mean(new)
+                         if ( max_mean <= mean){
+                           if( sd (new) <= 0.6163071){
+                             counter  = counter + 1
+                             max_mean = mean
+                             b1[counter] = c1[a] 
+                             b2[counter] = c2[b]
+                             b3[counter] = c3[c] 
+                             b4[counter] = c4[d] 
+                             b5[counter] = c5[e]
+                             b6[counter] = c6[f]
+                             b7[counter] = c7[g]
+                             b8[counter] = c8[h]
+                             b9[counter] = c9[j]
+                             b10[counter] =c10
+                             best_sd = sd(new)
+                             print(counter)
+                             print(best_sd)
+                             print(max_mean)
+                           }
+                         }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+```
+
+```{R}
+print(b1)
+print(b2)
+print(b3)
+print(b4)
+print(b5)
+print(b6)
+print(b7)
+print(b8)
+print(b9)
+print(b10)
+```
+
+# Step 7
+
+```{r}
+p1 = data_clean1$Close
+p2 = data_clean2$Close
+p3 = data_clean3$Close
+p4 = data_clean4$Close
+p5 = data_clean5$Close
+p6 = data_clean6$Close
+p7 = data_clean7$Close
+p8 = data_clean8$Close
+p9 = data_clean9$Close
+p10 = data_clean10$Close
+```
+
+```{r}
+base= rep(0,length(p1)-1)
+for (i in 1:(length(p1)-1)){
+base[[i]] = log((0.1*p1[i+1]+0.1*p2[i+1]+0.1*p3[i+1]+0.1*p4[i+1]+0.1*p5[i+1]+0.1*p6[i+1]+0.1*p7[i+1]+0.1*p8[i+1]+0.1*p9[i+1]+0.1*p10[i+1])/(0.1*p1[i]+0.1*p2[i]+0.1*p3[i]+0.1*p4[i]+0.1*p5[i]+0.1*p6[i]+0.1*p7[i]+0.1*p8[i]+0.1*p9[i]+0.1*p10[i]))
+}
+```
+
+```{r}
+mean(base)
+base_sd = sd(base)
+base_sd
+```
+
+```{r}
+set.seed(0)
+max_mean = 0
+b1 = rep(0, 8)
+b2 = rep(0, 8)
+b3 = rep(0, 8)
+b4 = rep(0, 8)
+b5 = rep(0, 8)
+b6 = rep(0, 8)
+b7 = rep(0, 8)
+b8 = rep(0, 8)
+b9 = rep(0, 8)
+b10= rep(0, 8)
+best_sd = 0
+```
+
+## Optimization Procedure
+
+0. Create and initialize variables that will be used: max_mean, best_sd, and b1,…,b9. Max_mean is used to keep track of current maximized means in loops, and will be updated if a larger mean appears. Best_sd keeps tracks the current sd of best combination of c1,…,c10. B1,…,b9 are to store the values of possible c1,…,c9 generated in the loops.
+1. Create sequences as possible values for each c. For example, c1 is created by seq(0,1-c1-c2,by=0.1), and is (0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0). 
+2. Loop through each sequence and then we have different combinations of c1, c2, …, c10. 
+3. Note: Step 2 and Step 1 is implemented at the same time since the c1+c2+…+c10 = 1. I created (0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0) for c1, and then in the loop of c1, I created the sequences for c2(which will depend on c1 since c2<=1-c1). And c3 is created by seq(0,1-c1-c2,by=0.1), and so on. c10 is then 1-c1-c2-c3-…-c9.
+4. For each combination of possible values of c1, …, c9 that sum up to 1, I calculated the new time series from the equation, and then calculated the mean and variance. If variance is smaller than std(1/10,1/10, . . . ,1/10), and mean is larger than current max, current max mean will  updated, and standard deviation of new series, and c1,c2,..,c9 will be saved and printed out.
+5. The last max_mean, best_sd, and b1,…,b9 are what we want.
+
+
+```{r}
+counter =0
+c1 = seq(0,1,by=0.1)
+  for (a in 1:length(c1)){
+    if (counter == 8){
+      break
+    }
+    c2 = seq(0,1-c1[a],by=0.1)
+    for (b in 1:length(c2)){
+      if(counter == 8){
+        break
+      }
+      c3 = seq(0,1-c1[a]-c2[b],by=0.1)
+      for (c in 1:length(c3)){
+        if(counter == 8){
+          break
+        }
+        c4 = seq(0,1-c1[a]-c2[b]-c3[c],by=0.1)
+        for(d in 1:length(c4)){
+          if(counter == 8){
+            break
+          }
+          c5 = seq(0,1-c1[a]-c2[b]-c3[c]-c4[d],by=0.1)
+          for(e in 1:length(c5)){
+            if(counter == 8){
+              break
+            }
+            c6 = seq(0,1-c1[a]-c2[b]-c3[c]-c4[d]-c5[e],by=0.1)
+            for (f in 1:length(c6)){
+              if(counter == 8){
+                break
+              }
+              c7 = seq(0,1-c1[a]-c2[b]-c3[c]-c4[d]-c5[e]-c6[f],by=0.1)
+              for(g in 1:length(c7)){
+                if(counter == 8){
+                break
+                }
+                c8 = seq(0,1-c1[a]-c2[b]-c3[c]-c4[d]-c5[e]-c6[f]-c7[g],by=0.1)
+                for (h in 1:length(c8)){
+                  if(counter == 8){
+                  break
+                  }
+                  c9 = seq(0,1-c1[a]-c2[b]-c3[c]-c4[d]-c5[e]-c6[f]-c7[g]-c8[h],by=0.1)
+                  for(j in 1:length(c9)){
+                    if(counter == 8){
+                    break
+                    }
+                     c10 = 1-(c1[a] + c2[b] + c3[c] + c4[d] + c5[e]+c6[f]+c7[g]+c8[h]+c9[j])
+                         new =rep(0, length(p1)-1)
+                         for (i in 1:(length(p1)-1)){
+                         new[i] = log((c1[a]*p1[i+1]+c2[b]*p2[i+1]+c3[c]*p3[i+1]+c4[d]*p4[i+1]+c5[e]*p5[i+1]+c6[f]*p6[i+1]+c7[g]*p7[i+1]+c8[h]*p8[i+1]+c9[j]*p9[i+1]+c10*p10[i+1])/(c1[a]*p1[i]+c2[b]*p2[i]+c3[c]*p3[i]+c4[d]*p4[i]+c5[e]*p5[i]+c6[f]*p6[i]+c7[g]*p7[i]+c8[h]*p8[i]+c9[j]*p9[i]+c10*p10[i]))
+                         }
+                         mean = mean(new)
+                         if ( max_mean <= mean){
+                           if( sd (new) <= 0.0139621){
+                             counter  = counter + 1
+                             max_mean = mean
+                             b1[counter] = c1[a] 
+                             b2[counter] = c2[b]
+                             b3[counter] = c3[c] 
+                             b4[counter] = c4[d] 
+                             b5[counter] = c5[e]
+                             b6[counter] = c6[f]
+                             b7[counter] = c7[g]
+                             b8[counter] = c8[h]
+                             b9[counter] = c9[j]
+                             b10[counter] =c10
+                             best_sd = sd(new)
+                             print(counter)
+                             print(best_sd)
+                             print(max_mean)
+                           }
+                         }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+```
+
+```{R}
+print(b1)
+print(b2)
+print(b3)
+print(b4)
+print(b5)
+print(b6)
+print(b7)
+print(b8)
+print(b9)
+print(b10)
+```
+
+# Step 8
+
+```{r}
+base_ts = as.ts(base)
+```
+
+### plot the series ###
+```{r}
+plot(base_ts)
+```
+
+### Fit different models
+
+### Best model is Garch(1,2)
+```{r, results='hide'}
+mpq = garch(x=base_ts,order=c(1,1))
+mpq1 = garch(x=base_ts,order=c(1,2))
+mpq2 = garch(x=base_ts,order=c(2,1))
+mpq3 = garch(x=base_ts,order=c(2,2))
+```
+
+```{r}
+summary(mpq)
+summary(mpq1)
+summary(mpq2)
+summary(mpq3)
+```
+
+### plot residuals ###
+
+```{r}
+plot(residuals(mpq1),type='h',ylab='standardized residuals')
+```
+
+### sum of squared residuals ###
+
+```{r}
+sum(na.omit(residuals(mpq))^2)
+sum(na.omit(residuals(mpq1))^2)
+sum(na.omit(residuals(mpq2))^2)
+sum(na.omit(residuals(mpq3))^2)
+```
+
+### diagnostics
+```{r}
+qqnorm(residuals(mpq1)); qqline(residuals(mpq1))
+acf(residuals(mpq1)^2,na.action=na.omit)
+shapiro.test(na.omit(residuals(mpq1)))
+jarque.bera.test(na.omit(residuals(mpq1)))
+skewness(na.omit(residuals(mpq1)))
+kurtosis(na.omit(residuals(mpq1)))
+gBox(mpq1,x=base_ts,method='squared')
+gBox(mpq1,lags =20,plot = F, x=base_ts,method='squared')$pvalue
+```
+
+### Computer mean and sd for residuals
+
+```{r}
+mean(na.omit(residuals(mpq1)))
+sd(na.omit(residuals(mpq1)))
+```
+
+# Step 9
+
+### c = (0 0 0 0 0 0.2 0.1 0.1 0.3 0.3)
+
+```{r}
+best= rep(0,length(p1)-1)
+for (i in 1:(length(p1)-1)){
+best[[i]] = log((0.2*p6[i+1]+0.1*p7[i+1]+0.1*p8[i+1]+0.3*p9[i+1]+0.3*p10[i+1])/(0.2*p6[i]+0.1*p7[i]+0.1*p8[i]+0.3*p9[i]+0.3*p10[i]))
+}
+```
+
+### plot the series ###
+```{r}
+best_ts = as.ts(best)
+plot(best_ts)
+```
+
+### Fit different models
+
+### Best model is Garch(1,2)
+```{r, results='hide'}
+mpq = garch(x=best_ts,order=c(1,1))
+mpq1 = garch(x=best_ts,order=c(1,2))
+mpq2 = garch(x=best_ts,order=c(2,1))
+mpq3 = garch(x=best_ts,order=c(2,2))
+```
+
+```{r}
+summary(mpq)
+summary(mpq1)
+summary(mpq2)
+summary(mpq3)
+```
+
+### plot residuals ###
+
+```{r}
+plot(residuals(mpq3),type='h',ylab='standardized residuals')
+```
+
+### sum of squared residuals ###
+
+```{r}
+sum(na.omit(residuals(mpq))^2)
+sum(na.omit(residuals(mpq1))^2)
+sum(na.omit(residuals(mpq2))^2)
+sum(na.omit(residuals(mpq3))^2)
+```
+
+### diagnostics
+```{r}
+qqnorm(residuals(mpq3)); qqline(residuals(mpq3))
+acf(residuals(mpq3)^2,na.action=na.omit)
+shapiro.test(na.omit(residuals(mpq3)))
+jarque.bera.test(na.omit(residuals(mpq3)))
+skewness(na.omit(residuals(mpq3)))
+kurtosis(na.omit(residuals(mpq3)))
+gBox(mpq1,x=best_ts,method='squared')
+gBox(mpq1,lags =20,plot = F, x=best_ts,method='squared')$pvalue
+```
+
+### Computer mean and sd for residuals
+
+```{r}
+mean(na.omit(residuals(mpq3)))
+sd(na.omit(residuals(mpq3)))
+```
